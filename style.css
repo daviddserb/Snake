@@ -1,0 +1,61 @@
+body {
+  /* Display in the middle of the page */
+  display: flex;
+  align-items: center;
+
+  /* Display all elements in columns (Title, Score, Board) */
+  flex-direction: column;
+
+  background-color: grey;
+  color: whitesmoke;
+  font-size: 3rem;
+}
+
+.title {
+  margin: 20px;
+}
+
+#grid {
+  display: grid;
+  grid-template-columns: repeat(20, auto);
+
+  background-color: white;
+  border: 1px solid #000000;
+}
+
+#grid div {
+  width: 30px;
+  height: 30px;
+
+  /* For Testing */
+  /* border: 1px solid blue; */
+}
+
+.snake {
+  background-color: green;
+}
+
+.apple {
+  background-color: red;
+}
+
+#eatAppleSound {
+  display: none;
+}
+
+#pauseButton {
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  padding: 10px 20px;
+  margin: 10px;
+  cursor: pointer;
+}
+
+#pauseButton.pause {
+  content: "||";
+}
+
+#pauseButton.resume {
+  content: "▶";
+}
