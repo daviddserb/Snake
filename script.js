@@ -5,9 +5,9 @@ var squaresMatrix = Array(GRID_WIDTH).fill().map(() => Array(GRID_HEIGHT).fill()
 // Snake initial position - snakeArray is an array of objects, and each object contains 2 properties
 var snakeArray = [{lineS: 7, colS: 5}, {lineS: 7, colS: 6}, {lineS: 7, colS: 7}];
 var snakeDirection = "standing";
-const SNAKESPEED = 100;
+const SNAKE_SPEED = 100;
 
-const GAMESTATUS = document.getElementById("gameStatus");
+const GAME_STATUS = document.getElementById("gameStatus");
 var isGameLost = false;
 
 const SCORE = document.getElementById("score");
@@ -19,9 +19,10 @@ var isGamePaused = false;
 let gameInterval; // Declare a variable to store the interval identifier
 
 function generateBoard() {
+    // Create the squares
 	for (let row = 0; row < GRID_WIDTH; ++row) {
 		for (let col = 0; col < GRID_HEIGHT; ++col) {
-			let square = document.createElement("div"); // Create the square
+			let square = document.createElement("div");
 		    GRID.appendChild(square); // Add the square to the grid
 
 		    // Snake initial position
@@ -41,7 +42,7 @@ function setSnakeDirection(e) {
 	let arrow = e.code;
 
 	if (snakeDirection === "standing" && (arrow === "ArrowUp" || arrow === "ArrowRight" || arrow === "ArrowDown")) {
-		gameInterval = setInterval(snakeMove, SNAKESPEED); // Start the game
+		gameInterval = setInterval(snakeMove, SNAKE_SPEED); // Start the game
 		PAUSE_BUTTON.style.display = "inline-block"; // Show the Pause button
 	}
 
@@ -96,6 +97,18 @@ function snakeMove() {
 	}
 }
 
+function didSnakeHitItself() {
+    for (let row = 0; row < snakeArray.length; ++row) {
+		for (let col = row + 1; col < snakeArray.length; ++col) {
+			if (snakeArray[row].lineS == snakeArray[col].lineS && snakeArray[row].colS == snakeArray[col].colS) {
+                isGameLost = true;
+                gameFinished();
+			}
+		}
+	}
+	return false;
+}
+
 // If Snake eat apple => increase snake tail
 function didSnakeEatApple(snakeHeadLine, snakeHeadCol, snakeTailLine, snakeTailCol) {
 	if (squaresMatrix[snakeHeadLine][snakeHeadCol].classList.contains("snake") && squaresMatrix[snakeHeadLine][snakeHeadCol].classList.contains("apple")) {
@@ -134,31 +147,20 @@ function spawnNewApple() {
     }
 }
 
-function didSnakeHitItself() {
-	for (let i = 0; i < snakeArray.length; ++i) {
-		for (let j = i + 1; j < snakeArray.length; ++j) {
-			if (snakeArray[i].lineS == snakeArray[j].lineS && snakeArray[i].colS == snakeArray[j].colS) {
-				clearInterval(gameInterval);
-				isGameLost = true;
-				printStatusGame();
-				clearPauseButton();
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
 function didSnakeWin() {
 	const snakeInitialDimension = 3;
 
 	if (snakeArray.length == GRID_WIDTH * GRID_HEIGHT - snakeInitialDimension) {
-		clearInterval(gameInterval);
-		printStatusGame();
-		clearPauseButton();
-		return true;
+        gameFinished();
 	}
 	return false;
+}
+
+function gameFinished() {
+    clearInterval(gameInterval);
+    printStatusGame();
+    clearPauseButton();
+    return true;
 }
 
 function togglePause() {	
@@ -170,7 +172,7 @@ function togglePause() {
     PAUSE_BUTTON.classList.toggle("resume", !isGamePaused);
 
     if (isGamePaused) clearInterval(gameInterval);
-    else gameInterval = setInterval(snakeMove, SNAKESPEED);
+    else gameInterval = setInterval(snakeMove, SNAKE_SPEED);
 }
 
 function clearPauseButton() {
@@ -178,7 +180,7 @@ function clearPauseButton() {
 }
 
 function printStatusGame() {
-	GAMESTATUS.innerHTML = isGameLost ? "GAME OVER! YOU LOST!" : "CONGRATULATIONS! YOU WON!";
+	GAME_STATUS.innerHTML = isGameLost ? "GAME OVER! YOU LOST!" : "CONGRATULATIONS! YOU WON!";
 }
 
 generateBoard();
