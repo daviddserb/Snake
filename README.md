@@ -1,8 +1,8 @@
 # Minesweeper - Game Clone in JavaScript
 
-Rediscover the classic Snake game with a modern twist – now, bumping into the walls won't end your journey. Instead, seamlessly teleport to the opposite side and keep the game alive. You also can use the Pause button for more control over your Snake adventure.
-
 Try the game live: https://daviddserb.github.io/Snake/
+
+Rediscover the classic Snake game with a modern twist – now, bumping into the walls won't end your journey. Instead, seamlessly teleport to the opposite side and keep the game alive. You also can use the Pause button for more control over your Snake adventure.
 
 Playing Instructions:
 - Navigate the board using arrow keys (Up, Right, Down, Left).
